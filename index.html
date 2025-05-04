@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dumb Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        body {
+            font-family: "consolas", "Courier New", monospace;
+            background-color: #000000;
+            color: #00ffff;
+            padding: 20px;
+        }
+        h1 {
+            color: #00ff00;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: "consolas", "Courier New", monospace;
+            color: #ff00ff;
+            background-color: #000000;
+            border: 1px solid #00ffff;
+        }
+        button {
+            font-family: "consolas", "Courier New", monospace;
+            padding: 10px 15px;
+            margin-left: 10px;
+            background-color: #000000;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+        }
+    </style>
+</head>
+<body>
+<h1>Chatbot</h1>
+<p id="Label">Type your message below:</p>
+<input type="text" id="userInput" placeholder="Type your message here...">
+<br><br>
+<button onclick="deliver()">Send</button>
+<br><br>
+<p>Developed By Hiten Gupta</p>
+<script>
+    function deliver() {
+        const pairs = [
+            [/^(hello|hi|hey)$/, ["Hello there!", "Hey! How can I assist you today?"]],
+            [/^how are you?$/, ["I'm functioning well! What about you?", "I'm an AI, but I’m always ready to help."]],
+            [/^(your name?|what's your name?|what is your name?)$/, ["I’m ChatBotHG, your AI assistant!", "You can call me ChatBotHG."]],
+            [/^(tell me a joke|tell me some jokes)$/, [
+                "Why don’t programmers like nature? It has too many bugs!",
+                "I told my computer I needed a break… Now it won’t stop sending me vacation ads."
+            ]],
+            [/^(what can you do?|what you can do?|what else you can do?|what else can you do?|What is your purpose?|what's your purpose?)$/, [
+                "I can assist you with programming, jokes, and provide information.",
+                "I can help with Python programming, answer questions, and tell jokes!"
+            ]],
+            [/^(can you help me with python?|do you know python?|Help me with python\.)$/, [
+                "Absolutely! What aspect of Python are you working on?",
+                "Yes! Whether it’s automation, AI, or web scraping, I’ve got you covered!"
+            ]],
+            [/^quit$/, ["Goodbye! See you later.", "Take care!"]]
+        ];
+
+        function typeEffect(text, elementId) {
+            let typingElement = document.getElementById(elementId);
+            typingElement.innerHTML = ""; // Clear previous text
+            let index = 0;
+
+            function type() {
+                if (index < text.length) {
+                    typingElement.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(type, 100); // Adjust speed here
+                }
+            }
+
+            type();
+        }
+
+        function getResponse(userInput) {
+            let response = "I'm not sure how to respond to that. Please check your Internet connection.";
+            for (let [pattern, replies] of pairs) {
+                if (pattern.test(userInput)) {
+                    response = replies[Math.floor(Math.random() * replies.length)];
+                    break;
+                }
+            }
+            return response;
+        }
+        let userMessage = document.getElementById('userInput').value;
+        let usersinput = userMessage.toLowerCase()
+        let response = getResponse(usersinput);
+        typeEffect(response, 'Label');
+        document.getElementById('userInput').value = '';
+    }
+</script>
+</body>
+</html>
